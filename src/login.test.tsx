@@ -2,7 +2,7 @@ import { Login } from './login';
 import { LoginService } from './services/LoginService';
 import * as ReactDOM from 'react-dom';
 import React from 'react';
-import { fireEvent, queryByText } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 
 
 describe('Login component tests', () => {
@@ -41,6 +41,14 @@ describe('Login component tests', () => {
             .toBe('password');
     });
 
-
-
-})
+    it('Passes credentials correctly', () => {
+        const inputs = container.querySelectorAll('input');
+        const loginInput = inputs[0];
+        const passwordInput = inputs[1];
+        const loginButton = inputs[2];
+        fireEvent.change(loginInput, { target: { value: 'someUser' } });
+        fireEvent.change(passwordInput, { target: { value: 'somePass' } });
+        fireEvent.click(loginButton);
+        expect(loginServiceSpy).toBeCalledWith('someUser', 'somePass');
+    });
+});
